@@ -13,5 +13,7 @@ web-report/
 # macOS
 .DS_Store
 
+# custom
 .vscode
-yarn-error.log
+yarn-debug.log*
+yarn-error.log*
