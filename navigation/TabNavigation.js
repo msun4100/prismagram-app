@@ -9,25 +9,25 @@ import Search from "../screens/Search";
 import Notifications from "../screens/Notifications";
 import Profile from "../screens/Profile";
 
-const TabNavigation = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 export default () => (
-  <NavigationContainer>
-    <TabNavigation.Navigator>
-      <TabNavigation.Screen name="Home" component={Home} />
-      <TabNavigation.Screen name="Search" component={Search} />
-      <TabNavigation.Screen
-        name="Add"
-        component={View}
-        listeners={{
-          tabPress: (e) => {
-            e.preventDefault();
-            console.log("Add");
-          },
-        }}
-      />
-      <TabNavigation.Screen name="Notifications" component={Notifications} />
-      <TabNavigation.Screen name="Profile" component={Profile} />
-    </TabNavigation.Navigator>
-  </NavigationContainer>
+  <Tab.Navigator>
+    <Tab.Screen name="Home" component={Home} />
+    <Tab.Screen name="Search" component={Search} />
+    <Tab.Screen
+      name="Add"
+      component={View}
+      listeners={({ navigation, route }) => ({
+        tabPress: (e) => {
+          e.preventDefault();
+          console.log("route", route);
+          console.log("navigation", navigation);
+          navigation.navigate("PhotoNavigation");
+        },
+      })}
+    />
+    <Tab.Screen name="Notifications" component={Notifications} />
+    <Tab.Screen name="Profile" component={Profile} />
+  </Tab.Navigator>
 );
