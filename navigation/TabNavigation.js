@@ -1,15 +1,16 @@
 import "react-native-gesture-handler";
 import * as React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import Home from "../screens/Tabs/Home";
 import Search from "../screens/Tabs/Search";
 import Notifications from "../screens/Tabs/Notifications";
 import Profile from "../screens/Tabs/Profile";
+import MessagesLink from "../components/MessagesLink";
 
-import { createStackNavigator } from "@react-navigation/stack";
-
+// 기본 탭 네이게이션에 헤더 등 효과를 주기 위해
 const stackFactory = ({ name, component, customConfig }) => {
   const NewStack = createStackNavigator();
   return () => (
@@ -33,11 +34,7 @@ export default () => (
         component: Home,
         customConfig: {
           title: "title here",
-          headerRight: () => (
-            <TouchableOpacity>
-              <Text>headerRight</Text>
-            </TouchableOpacity>
-          ),
+          headerRight: () => <MessagesLink />,
         },
       })}
     />
