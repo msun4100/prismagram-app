@@ -27,7 +27,11 @@ const stackFactory = ({ name, component, customConfig }) => {
 const Tab = createBottomTabNavigator();
 
 export default () => (
-  <Tab.Navigator>
+  <Tab.Navigator
+    tabBarOptions={{
+      activeBackgroundColor: "#FAFAFA",
+    }}
+  >
     <Tab.Screen
       name="Home"
       component={stackFactory({
