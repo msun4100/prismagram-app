@@ -7,11 +7,20 @@ import useInput from "../../hooks/useInput";
 import { Alert } from "react-native";
 import { useMutation } from "react-apollo-hooks";
 import { CREATE_ACCOUNT } from "./AuthQueries";
+import * as Facebook from "expo-facebook";
 
 const View = styled.View`
   justify-content: center;
   align-items: center;
   flex: 1;
+`;
+
+const FBContainer = styled.View`
+  margin-top: 25px;
+  padding-top: 25px;
+  border-top-width: 1px;
+  border-color: ${(props) => props.theme.lightGreyColor};
+  border-style: solid;
 `;
 
 export default ({ navigation, route }) => {
@@ -65,6 +74,37 @@ export default ({ navigation, route }) => {
       setLoading(false);
     }
   };
+
+  const fbLogin = async () => {
+    try {
+      setLoading(true);
+      await Facebook.initializeAsync();
+      const { type, token } = await Facebook.logInWithReadPermissionsAsync(
+        "692699008214970",
+        {
+          permissions: ["public_profile", "email"],
+        }
+      );
+      if (type === "success") {
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}&fields=id,last_name,first_name,email`
+        );
+        const { email, first_name, last_name } = await response.json();
+        emailInput.setValue(email);
+        fNameInput.setValue(first_name);
+        lNameInput.setValue(last_name);
+        const [username] = email.split("@"); // 배열의 첫번째
+        usernameInput.setValue(username);
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View>
@@ -92,6 +132,14 @@ export default ({ navigation, route }) => {
           autoCorrect={false}
         />
         <AuthButton loading={loading} onPress={handleSignup} text="Sign Up" />
+        <FBContainer>
+          <AuthButton
+            bgColor={"#2D4DA7"}
+            loading={false}
+            onPress={fbLogin}
+            text="Connect Facebook"
+          />
+        </FBContainer>
       </View>
     </TouchableWithoutFeedback>
   );
