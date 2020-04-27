@@ -8,6 +8,7 @@ import { Alert } from "react-native";
 import { useMutation } from "react-apollo-hooks";
 import { CREATE_ACCOUNT } from "./AuthQueries";
 import * as Facebook from "expo-facebook";
+import * as Google from "expo-google-app-auth";
 
 const View = styled.View`
   justify-content: center;
@@ -21,6 +22,10 @@ const FBContainer = styled.View`
   border-top-width: 1px;
   border-color: ${(props) => props.theme.lightGreyColor};
   border-style: solid;
+`;
+
+const GoogleContainer = styled.View`
+  margin-top: 20px;
 `;
 
 export default ({ navigation, route }) => {
@@ -90,11 +95,7 @@ export default ({ navigation, route }) => {
           `https://graph.facebook.com/me?access_token=${token}&fields=id,last_name,first_name,email`
         );
         const { email, first_name, last_name } = await response.json();
-        emailInput.setValue(email);
-        fNameInput.setValue(first_name);
-        lNameInput.setValue(last_name);
-        const [username] = email.split("@"); // 배열의 첫번째
-        usernameInput.setValue(username);
+        updateFormData(email, first_name, last_name);
       } else {
         // type === 'cancel'
       }
@@ -103,6 +104,38 @@ export default ({ navigation, route }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const googleLogin = async () => {
+    const GOOGLE_ID =
+      "221597462123-h5ka41kvh7fola3mbv91olkmlg8koald.apps.googleusercontent.com";
+    try {
+      setLoading(true);
+      const result = await Google.logInAsync({
+        androidClientId: GOOGLE_ID,
+        scopes: ["profile", "email"],
+      });
+      if (result.type === "success") {
+        const user = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+          headers: { Authorization: `Bearer ${result.accessToken}` },
+        });
+        const { email, family_name, given_name } = await user.json();
+        updateFormData(email, given_name, family_name);
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const updateFormData = (email, firstName, lastName) => {
+    emailInput.setValue(email);
+    fNameInput.setValue(firstName);
+    lNameInput.setValue(lastName);
+    const [username] = email.split("@"); // 배열의 첫번째
+    usernameInput.setValue(username);
   };
 
   return (
@@ -140,6 +173,14 @@ export default ({ navigation, route }) => {
             text="Connect Facebook"
           />
         </FBContainer>
+        <GoogleContainer>
+          <AuthButton
+            bgColor={"#EE1922"}
+            loading={false}
+            onPress={googleLogin}
+            text="Connect Google"
+          />
+        </GoogleContainer>
       </View>
     </TouchableWithoutFeedback>
   );
