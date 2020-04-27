@@ -5,13 +5,20 @@ import { createStackNavigator } from "@react-navigation/stack";
 import TabNavigation from "./TabNavigation";
 import PhotoNavigation from "./PhotoNavigation";
 import MessageNavigation from "./MessageNavigation";
+import { stackStyles } from "./config";
 
 const MainNavigation = createStackNavigator();
 
 export default () => {
   return (
     <NavigationContainer>
-      <MainNavigation.Navigator headerMode="none" mode="modal">
+      <MainNavigation.Navigator
+        headerMode="none"
+        mode="modal"
+        screenOptions={{
+          headerStyle: { ...stackStyles },
+        }}
+      >
         <MainNavigation.Screen name="TabNavigation" component={TabNavigation} />
         <MainNavigation.Screen
           name="PhotoNavigation"

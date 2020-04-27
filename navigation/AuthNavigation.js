@@ -13,7 +13,6 @@ export default () => {
     <NavigationContainer>
       <AuthNavigation.Navigator
         initialRouteName="AuthHome"
-        // initialRouteName="Signup"
         headerMode="none"
         tabBarOptions={{
           showLabel: false,
