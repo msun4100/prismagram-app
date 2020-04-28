@@ -33,8 +33,15 @@ export default function App() {
         storage: AsyncStorage,
       });
 
+      // 요청할때마다 request 옵션으로 인터셉트. 토큰을 매번 추가해 줌. header옵션으로 해결 x
       const client = new ApolloClient({
         cache,
+        request: async (operation) => {
+          const token = await AsyncStorage.getItem("jwt");
+          return operation.setContext({
+            headers: { Authorization: `Bearer ${token}` },
+          });
+        },
         ...apolloClientOptions,
       });
       const isLoggedIn = await AsyncStorage.getItem("isLoggedIn"); // AsyncStorage 사용시 true/false String 타입 주의

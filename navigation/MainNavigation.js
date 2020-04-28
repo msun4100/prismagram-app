@@ -17,6 +17,9 @@ export default () => {
         mode="modal"
         screenOptions={{
           headerStyle: { ...stackStyles },
+          cardStyle: {
+            backgroundColor: "white",
+          },
         }}
       >
         <MainNavigation.Screen name="TabNavigation" component={TabNavigation} />

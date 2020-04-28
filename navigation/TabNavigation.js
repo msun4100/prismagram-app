@@ -19,7 +19,7 @@ const stackFactory = ({ name, component, customConfig }) => {
   return () => (
     <NewStack.Navigator>
       <NewStack.Screen
-        name={name || "Must exists name or options.title"}
+        name={name || "You must enter a name or title"}
         component={component}
         options={{
           ...customConfig,
