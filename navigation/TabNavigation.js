@@ -46,8 +46,11 @@ export default () => (
             iconName = Platform.OS === "ios" ? "ios-search" : "md-search";
             break;
           case "Add":
-            iconName = Platform.OS === "ios" ? "ios-add" : "md-add";
-            size = 26;
+            iconName =
+              Platform.OS === "ios"
+                ? "ios-add-circle-outline"
+                : "md-add-circle-outline";
+            size = 25;
             break;
           case "Notifications":
             iconName =
