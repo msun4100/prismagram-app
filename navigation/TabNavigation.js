@@ -12,7 +12,6 @@ import MessagesLink from "../components/MessagesLink";
 import NavIcon from "../components/NavIcon";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../styles";
-import SearchBar from "../components/SearchBar";
 
 // 기본 탭 네이게이션에 헤더 등 효과를 주기 위해
 const stackFactory = ({ name, component, customConfig }) => {
@@ -32,12 +31,12 @@ const stackFactory = ({ name, component, customConfig }) => {
   );
 };
 
-// Search Screen의 header의 검색바 static 공유 효과 위해
+// Docs의 useLayoutEffect Hooks 사용 navigation.setOption 으로 대체.
 const SearchStackScreen = () => {
   const Stack = createStackNavigator();
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Search" component={Search} options={Search.options} />
+      <Stack.Screen name="Search" component={Search} />
     </Stack.Navigator>
   );
 };
