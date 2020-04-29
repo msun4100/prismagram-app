@@ -8,17 +8,29 @@ import Home from "../screens/Tabs/Home";
 import Search from "../screens/Tabs/Search";
 import Notifications from "../screens/Tabs/Notifications";
 import Profile from "../screens/Tabs/Profile";
+import Detail from "../screens/Detail";
 import MessagesLink from "../components/MessagesLink";
 import NavIcon from "../components/NavIcon";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../styles";
 
+// Docs의 useLayoutEffect Hooks 사용 navigation.setOption 으로 대체.
+const SearchStackScreen = () => {
+  const Stack = createStackNavigator();
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Search" component={Search} />
+      <Stack.Screen name="Detail" component={Detail} />
+    </Stack.Navigator>
+  );
+};
+
 // 기본 탭 네이게이션에 헤더 등 효과를 주기 위해
 const stackFactory = ({ name, component, customConfig }) => {
-  const NewStack = createStackNavigator();
+  const Stack = createStackNavigator();
   return () => (
-    <NewStack.Navigator>
-      <NewStack.Screen
+    <Stack.Navigator>
+      <Stack.Screen
         name={name || "You must enter a name or title"}
         component={component}
         options={{
@@ -27,16 +39,7 @@ const stackFactory = ({ name, component, customConfig }) => {
           headerTitleAlign: "center",
         }}
       />
-    </NewStack.Navigator>
-  );
-};
-
-// Docs의 useLayoutEffect Hooks 사용 navigation.setOption 으로 대체.
-const SearchStackScreen = () => {
-  const Stack = createStackNavigator();
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Search" component={Search} />
+      <Stack.Screen name="Detail" component={Detail} />
     </Stack.Navigator>
   );
 };
@@ -47,6 +50,10 @@ export default () => (
   <Tab.Navigator
     initialRouteName="Search"
     screenOptions={({ route }) => ({
+      headerStyle: {
+        backgroundColor: "#f4511e",
+      },
+      headerTintColor: "#fff",
       tabBarIcon: ({ focused, color, size }) => {
         // tabBarOptions의 in/active color가 focused 여부에 따라 props의 color로
         let iconName;

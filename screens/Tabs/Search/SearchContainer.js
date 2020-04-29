@@ -1,17 +1,6 @@
 import React, { useLayoutEffect, useState } from "react";
-import styled from "styled-components";
-import styles from "../../../styles";
 import SearchBar from "../../../components/SearchBar";
 import SearchPresenter from "./SearchPresenter";
-
-const View = styled.View`
-  background-color: ${styles.screenBackgroundColor};
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-`;
-
-const Text = styled.Text``;
 
 export default ({ route, navigation }) => {
   const [term, setTerm] = useState("");
