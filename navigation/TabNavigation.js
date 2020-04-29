@@ -12,6 +12,7 @@ import MessagesLink from "../components/MessagesLink";
 import NavIcon from "../components/NavIcon";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../styles";
+import SearchBar from "../components/SearchBar";
 
 // 기본 탭 네이게이션에 헤더 등 효과를 주기 위해
 const stackFactory = ({ name, component, customConfig }) => {
@@ -24,9 +25,20 @@ const stackFactory = ({ name, component, customConfig }) => {
         options={{
           ...customConfig,
           headerStyle: { backgroundColor: "#FAFAFA" },
+          headerTitleAlign: "center",
         }}
       />
     </NewStack.Navigator>
+  );
+};
+
+// Search Screen의 header의 검색바 static 공유 효과 위해
+const SearchStackScreen = () => {
+  const Stack = createStackNavigator();
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Search" component={Search} options={Search.options} />
+    </Stack.Navigator>
   );
 };
 
@@ -34,6 +46,7 @@ const Tab = createBottomTabNavigator();
 
 export default () => (
   <Tab.Navigator
+    initialRouteName="Search"
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         // tabBarOptions의 in/active color가 focused 여부에 따라 props의 color로
@@ -94,27 +107,16 @@ export default () => (
           // title: "title here",
           headerRight: () => <MessagesLink />,
           headerTitle: () => <NavIcon name="logo-instagram" size={36} />,
-          headerTitleAlign: "center",
         },
       })}
     />
-    <Tab.Screen
-      name="Search"
-      component={stackFactory({
-        name: "Search",
-        component: Search,
-        customConfig: {
-          headerTitleAlign: "center",
-        },
-      })}
-    />
+    <Tab.Screen name="Search" component={SearchStackScreen} />
     <Tab.Screen
       name="Add"
       component={View}
       listeners={({ navigation, route }) => ({
         tabPress: (e) => {
           e.preventDefault();
-          // console.log(navigation, route);
           navigation.navigate("PhotoNavigation");
         },
       })}
