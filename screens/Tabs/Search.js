@@ -21,20 +21,39 @@ class Search extends React.Component {
       console.log("Search.navigation", navigation);
       return (
         <SearchBar
-          value={this.state.term}
-          onChange={this.onChange}
-          onSubmit={() => {}}
+          value={route.params?.term || ""}
+          onChange={route.params?.onChange || (() => null)}
+          onSubmit={route.params?.onSubmit || (() => null)}
         />
       );
     },
   });
+  // Screen 이기 때문에 props에 navigation이 전달됨
+  constructor(props) {
+    super(props);
+    const { navigation } = props;
+    this.state = {
+      term: "",
+    };
+    navigation.setParams({
+      term: this.state.term,
+      onChange: this.onChange,
+      onSubmit: this.onSubmit,
+    });
+  }
 
-  state = {
-    term: "",
-  };
   onChange = (text) => {
-    this.setState({ text });
+    const { navigation } = this.props;
+    this.setState({ term: text });
+    navigation.setParams({
+      term: text,
+    });
   };
+
+  onSubmit = () => {
+    console.log("submit");
+  };
+
   render() {
     return (
       <View>
