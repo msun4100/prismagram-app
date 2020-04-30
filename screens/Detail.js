@@ -7,7 +7,7 @@ import { POST_FRAGMENT } from "../fragments";
 import Loader from "../components/Loader";
 import Post from "../components/Post";
 
-const FEED_QUERY = gql`
+const POST_DETAIL = gql`
   query seeFullPost($id: String!) {
     seeFullPost(id: $id) {
       ...PostParts
@@ -25,13 +25,11 @@ const View = styled.View`
 const Text = styled.Text``;
 
 export default ({ navigation, route }) => {
-  const { loading, data } = useQuery(FEED_QUERY, {
+  const { loading, data } = useQuery(POST_DETAIL, {
     variables: {
       id: route.params.id,
     },
   });
-
-  console.log(data, loading);
 
   useLayoutEffect(() => {
     navigation.setOptions({

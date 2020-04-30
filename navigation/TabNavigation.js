@@ -1,6 +1,7 @@
 import "react-native-gesture-handler";
 import * as React from "react";
 import { View, Platform } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -9,38 +10,75 @@ import Search from "../screens/Tabs/Search";
 import Notifications from "../screens/Tabs/Notifications";
 import Profile from "../screens/Tabs/Profile";
 import Detail from "../screens/Detail";
+import UserDetail from "../screens/UserDetail";
 import MessagesLink from "../components/MessagesLink";
 import NavIcon from "../components/NavIcon";
-import { Ionicons } from "@expo/vector-icons";
 import styles from "../styles";
+
+const defaultScreenOptions = {
+  headerStyle: { backgroundColor: "#FAFAFA" },
+  headerTitleAlign: "center",
+};
+
+const HomeStackScreen = () => {
+  const Stack = createStackNavigator();
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        ...defaultScreenOptions,
+      }}
+    >
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerRight: () => <MessagesLink />,
+          headerTitle: () => <NavIcon name="logo-instagram" size={36} />,
+        }}
+      />
+      <Stack.Screen name="Detail" component={Detail} />
+      <Stack.Screen name="UserDetail" component={UserDetail} />
+    </Stack.Navigator>
+  );
+};
 
 // Docs의 useLayoutEffect Hooks 사용 navigation.setOption 으로 대체.
 const SearchStackScreen = () => {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        ...defaultScreenOptions,
+      }}
+    >
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="Detail" component={Detail} />
+      <Stack.Screen name="UserDetail" component={UserDetail} />
     </Stack.Navigator>
   );
 };
 
-// 기본 탭 네이게이션에 헤더 등 효과를 주기 위해
-const stackFactory = ({ name, component, customConfig }) => {
-  const Stack = createStackNavigator();
+// 각각을 function 으로 선언해서 리턴하면 잘되는데 팩토리로 하면 Detail과 UserDetail의 route.params 로그는 찍히는데 액티비티가 열리지 않는다. 뭐가 문제지..
+// <NavigationContainer independent={true}>...</> 으로 감싸면 되긴 하는데.. 이 문제가 있음 -> Note that this will make the child navigators disconnected from the parent and you won't be able to navigate between them
+// HomeScreenStack, SearchScreenStack 각각을 Docs 처럼 선언해서 사용하면 또 잘됨..
+const stackFactory = ({ name, component, customConfig = {} }) => {
+  const StackF = new createStackNavigator();
   return () => (
-    <Stack.Navigator>
-      <Stack.Screen
-        name={name || "You must enter a name or title"}
+    <StackF.Navigator
+      screenOptions={({ route }) => ({
+        defaultScreenOptions,
+      })}
+    >
+      <StackF.Screen
+        name={name || "Please Enter screen name"}
         component={component}
         options={{
           ...customConfig,
-          headerStyle: { backgroundColor: "#FAFAFA" },
-          headerTitleAlign: "center",
         }}
       />
-      <Stack.Screen name="Detail" component={Detail} />
-    </Stack.Navigator>
+      <StackF.Screen name="Detail" component={Detail} />
+      <StackF.Screen name="UserDetail" component={UserDetail} />
+    </StackF.Navigator>
   );
 };
 
@@ -48,12 +86,8 @@ const Tab = createBottomTabNavigator();
 
 export default () => (
   <Tab.Navigator
-    initialRouteName="Search"
+    initialRouteName="Home"
     screenOptions={({ route }) => ({
-      headerStyle: {
-        backgroundColor: "#f4511e",
-      },
-      headerTintColor: "#fff",
       tabBarIcon: ({ focused, color, size }) => {
         // tabBarOptions의 in/active color가 focused 여부에 따라 props의 color로
         let iconName;
@@ -105,17 +139,14 @@ export default () => (
       showLabel: false,
     }}
   >
-    <Tab.Screen
+    <Tab.Screen name="Home" component={HomeStackScreen} />
+    {/* <Tab.Screen
       name="Home"
       component={stackFactory({
+        name: "Home",
         component: Home,
-        customConfig: {
-          // title: "title here",
-          headerRight: () => <MessagesLink />,
-          headerTitle: () => <NavIcon name="logo-instagram" size={36} />,
-        },
       })}
-    />
+    /> */}
     <Tab.Screen name="Search" component={SearchStackScreen} />
     <Tab.Screen
       name="Add"
