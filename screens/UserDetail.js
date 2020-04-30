@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import { useQuery } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
 import { USER_FRAGMENT } from "../fragments";
@@ -16,9 +16,16 @@ const GET_USER = gql`
 `;
 
 export default ({ navigation, route }) => {
+  console.log("UserDetail.route", route);
+
   const { loading, data } = useQuery(GET_USER, {
     variables: { username: route.params.username },
   });
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: route.params.username || "User",
+    });
+  }, [navigation]);
   return (
     <ScrollView>
       {loading ? (

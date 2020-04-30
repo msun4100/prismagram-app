@@ -65,7 +65,6 @@ const Post = ({
   isLiked: isLikedProp,
   navigation,
 }) => {
-  console.log("Post.navigation", navigation);
   const [isLiked, setIsLiked] = useState(isLikedProp);
   const [likeCount, setLikeCount] = useState(likeCountProp);
   const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
@@ -99,6 +98,7 @@ const Post = ({
     marginBottom: 3,
   };
 
+  // console.log("Post.navigation", navigation);
   // const navigation = useNavigation();
   if (!navigation) {
     navigation = useNavigation();

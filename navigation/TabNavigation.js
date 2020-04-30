@@ -53,7 +53,13 @@ const SearchStackScreen = () => {
     >
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="Detail" component={Detail} />
-      <Stack.Screen name="UserDetail" component={UserDetail} />
+      <Stack.Screen
+        name="UserDetail"
+        component={UserDetail}
+        // options={({ route }) => ({
+        //   title: route.params.username || "UserDetail!!!",
+        // })}
+      />
     </Stack.Navigator>
   );
 };
