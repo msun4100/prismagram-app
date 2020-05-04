@@ -31,7 +31,8 @@ export default ({ navigation, route }) => {
       {loading ? (
         <Loader />
       ) : (
-        data && data.seeUser && <UserProfile {...data.seeUser} />
+        // data && data.seeUser && <UserProfile {...data.seeUser} />
+        data?.seeUser && <UserProfile {...data.seeUser} />
       )}
     </ScrollView>
   );
