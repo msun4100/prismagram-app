@@ -16,8 +16,6 @@ const GET_USER = gql`
 `;
 
 export default ({ navigation, route }) => {
-  console.log("UserDetail.route", route);
-
   const { loading, data } = useQuery(GET_USER, {
     variables: { username: route.params.username },
   });
@@ -31,7 +29,6 @@ export default ({ navigation, route }) => {
       {loading ? (
         <Loader />
       ) : (
-        // data && data.seeUser && <UserProfile {...data.seeUser} />
         data?.seeUser && <UserProfile {...data.seeUser} />
       )}
     </ScrollView>

@@ -43,13 +43,13 @@ const StatName = styled.Text`
 
 const ProfileMeta = styled.View`
   margin-top: 10px;
-  padding-horizontal: 20px;
+  padding: 0 20px;
 `;
 
 const Bio = styled.Text``;
 
 const ButtonContainer = styled.View`
-  padding-vertical: 5px;
+  padding: 5px 0;
   border: 1px solid ${styles.lightGreyColor};
   flex-direction: row;
   margin-top: 30px;
