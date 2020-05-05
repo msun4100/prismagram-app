@@ -40,8 +40,10 @@ export default ({ navigation }) => {
       setRefreshing(false);
     }
   };
+
   return (
     <ScrollView
+      style={{ backgroundColor: "white" }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={refresh} />
       }

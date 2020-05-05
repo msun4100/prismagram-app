@@ -22,7 +22,7 @@ export default ({ navigation, route }) => {
   const { loading, data } = useQuery(ME);
 
   useLayoutEffect(() => {
-    if (data.me) {
+    if (data?.me) {
       navigation.setOptions({
         headerTitle: data.me.username,
       });
