@@ -11,6 +11,7 @@ const Tab = createMaterialTopTabNavigator();
 function PhotoTabs() {
   return (
     <Tab.Navigator
+      initialRouteName="TakePhoto"
       tabBarPosition="bottom"
       tabBarOptions={{
         indicatorStyle: {
