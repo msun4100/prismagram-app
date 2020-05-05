@@ -57,7 +57,9 @@ export default () => {
         name="PhotoTabs"
         component={PhotoTabs}
         options={{
-          headerShown: false,
+          headerShown: true,
+          headerTitle: "Choose Photo",
+          headerTitleAlign: "center",
         }}
       />
       <PhotoNavigation.Screen
