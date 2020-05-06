@@ -65,11 +65,12 @@ export default () => {
       />
       <PhotoNavigation.Screen
         headerMode="screen"
-        name="UploadPhoto"
+        name="Upload"
         component={UploadPhoto}
         options={{
           headerShown: true,
           headerTitleAlign: "center",
+          headerTitle: "Upload",
         }}
       />
     </PhotoNavigation.Navigator>
