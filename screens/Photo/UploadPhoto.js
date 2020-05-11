@@ -72,7 +72,6 @@ export default ({ navigation, route }) => {
     if (captionInput.value === "" || locationInput.value === "") {
       Alert.alert("All fields are required");
     }
-    console.log("photo", photo);
     const formData = new FormData();
     const name = photo.filename;
     const [, type] = name.split(".");
@@ -86,20 +85,22 @@ export default ({ navigation, route }) => {
     try {
       setLoading(true);
       const {
-        data: { path },
+        data: { location },
       } = await axios.post("http://localhost:4000/api/upload", formData, {
         headers: {
           "content-type": "multipart/form-data",
         },
       });
-      console.log(path.replace(/\\/gi, "/"));
+
+      console.log(location);
+
       const {
         data: { upload },
       } = await uploadMutation({
         variables: {
+          files: [location],
           caption: captionInput.value,
           location: locationInput.value,
-          files: [`http://localhost:4000/${path.replace(/\\/gi, "/")}`],
         },
       });
       if (upload.id) {
