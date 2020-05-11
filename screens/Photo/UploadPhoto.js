@@ -1,9 +1,23 @@
 import React, { useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
+import { gql } from "apollo-boost";
 import useInput from "../../hooks/useInput";
 import { Alert, Image, ActivityIndicator } from "react-native";
 import styles from "../../styles";
 import constants from "../../constants";
+import { useMutation } from "react-apollo-hooks";
+import { FEED_QUERY } from "../Tabs/Home";
+
+const UPLOAD = gql`
+  mutation upload($caption: String!, $files: [String!]!, $location: String) {
+    upload(caption: $caption, files: $files, location: $location) {
+      id
+      caption
+      location
+    }
+  }
+`;
 
 const View = styled.View`
   background-color: ${styles.screenBackgroundColor};
@@ -42,12 +56,60 @@ const Text = styled.Text`
 
 export default ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
-  const captionInput = useInput("");
-  const locationInput = useInput("");
+  const photo = route?.params?.photo;
+  const captionInput = useInput("upload test");
+  const locationInput = useInput("Seoul");
 
-  const handleSubmit = () => {
+  const [uploadMutation] = useMutation(UPLOAD, {
+    refetchQueries: () => [
+      {
+        query: FEED_QUERY,
+      },
+    ],
+  });
+
+  const handleSubmit = async () => {
     if (captionInput.value === "" || locationInput.value === "") {
       Alert.alert("All fields are required");
+    }
+    console.log("photo", photo);
+    const formData = new FormData();
+    const name = photo.filename;
+    const [, type] = name.split(".");
+    formData.append("file", {
+      name,
+      type: `image/${
+        type.toLowerCase() === "jpg" ? "jpeg" : type.toLowerCase()
+      }`,
+      uri: photo.uri,
+    });
+    try {
+      setLoading(true);
+      const {
+        data: { path },
+      } = await axios.post("http://localhost:4000/api/upload", formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
+      console.log(path.replace(/\\/gi, "/"));
+      const {
+        data: { upload },
+      } = await uploadMutation({
+        variables: {
+          caption: captionInput.value,
+          location: locationInput.value,
+          files: [`http://localhost:4000/${path.replace(/\\/gi, "/")}`],
+        },
+      });
+      if (upload.id) {
+        navigation.navigate("TabNavigation");
+      }
+    } catch (error) {
+      console.log("UploadPhoto Error", error);
+      Alert.alert("Cant upload", "Try later");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,7 +117,7 @@ export default ({ navigation, route }) => {
     <View>
       <Container>
         <Image
-          source={{ uri: route?.params?.photo?.uri }}
+          source={{ uri: photo.uri }}
           style={{ height: 80, width: 80, marginRight: 30 }}
         />
         <Form>
