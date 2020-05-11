@@ -83,7 +83,7 @@ export default ({ navigation, route }) => {
   const fbLogin = async () => {
     try {
       setLoading(true);
-      await Facebook.initializeAsync();
+      await Facebook.initializeAsync("692699008214970");
       const { type, token } = await Facebook.logInWithReadPermissionsAsync(
         "692699008214970",
         {

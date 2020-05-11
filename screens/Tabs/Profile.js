@@ -4,10 +4,10 @@ import styles from "../../styles";
 import { gql } from "apollo-boost";
 import { USER_FRAGMENT } from "../../fragments";
 import { useQuery } from "react-apollo-hooks";
-import { ScrollView } from "react-native";
+import { ScrollView, TouchableOpacity, Text } from "react-native";
 import Loader from "../../components/Loader";
 import UserProfile from "../../components/UserProfile";
-import UserDetail from "../UserDetail";
+import { useLogOut } from "../../AuthContext";
 
 export const ME = gql`
   {
@@ -20,11 +20,17 @@ export const ME = gql`
 
 export default ({ navigation, route }) => {
   const { loading, data } = useQuery(ME);
+  const logout = useLogOut();
 
   useLayoutEffect(() => {
     if (data?.me) {
       navigation.setOptions({
         headerTitle: data.me.username,
+        headerRight: () => (
+          <TouchableOpacity onPress={logout} style={{ padding: 10 }}>
+            <Text>Log Out</Text>
+          </TouchableOpacity>
+        ),
       });
     }
   }, [navigation, data]);

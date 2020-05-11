@@ -7,8 +7,10 @@ import useInput from "../../hooks/useInput";
 import { Alert } from "react-native";
 import { useMutation } from "react-apollo-hooks";
 import { LOG_IN } from "./AuthQueries";
+import styles from "../../styles";
 
 const View = styled.View`
+  background-color: ${styles.screenBackgroundColor};
   justify-content: center;
   align-items: center;
   flex: 1;

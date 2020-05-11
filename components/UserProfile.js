@@ -60,7 +60,9 @@ const Button = styled.View`
   align-items: center;
 `;
 
-const GridContainer = styled.View``;
+const GridContainer = styled.View`
+  flex-direction: row;
+`;
 
 const UserProfile = ({
   avatar,

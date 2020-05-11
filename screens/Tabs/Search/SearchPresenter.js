@@ -23,10 +23,13 @@ export const SEARCH = gql`
 `;
 
 const Container = styled.View`
-  background-color: ${styles.screenBackgroundColor};
-  /* justify-content: flex-start;
-  align-items: flex-start; */
+  background-color: ${(props) => props.theme.screenBackgroundColor};
   flex: 1;
+  justify-content: center;
+`;
+
+const SquarePhotos = styled.View`
+  flex-direction: row;
 `;
 
 const SearchPresenter = ({ term, shouldFetch }) => {
@@ -59,9 +62,11 @@ const SearchPresenter = ({ term, shouldFetch }) => {
         {loading ? (
           <Loader />
         ) : (
-          data?.searchPost?.map((post) => (
-            <SquarePhoto key={post.id} {...post} />
-          ))
+          <SquarePhotos>
+            {data?.searchPost?.map((post) => (
+              <SquarePhoto key={post.id} {...post} />
+            ))}
+          </SquarePhotos>
         )}
       </ScrollView>
     </Container>

@@ -19,7 +19,8 @@ export default function App() {
   const [client, setClient] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const preLoad = async () => {
-    // await AsyncStorage.clear();
+    // await AsyncStorage.clear(); // logout
+    console.log("App.js jwt", await AsyncStorage.getItem("jwt"));
     try {
       await Font.loadAsync({
         ...Ionicons.font,
