@@ -4,8 +4,8 @@
  * cmd > ipconfig 확인 후 내부 IP 사용 ex) 192.168.99.1
  */
 const options = {
-  // uri: "http://192.168.99.1:4000",
-  uri: "http://localhost:4000",
+  uri: "http://192.168.99.1:4000",
+  // uri: "http://localhost:4000",
 };
 
 export default options;

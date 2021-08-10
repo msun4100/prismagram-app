@@ -19,7 +19,9 @@ export const ME = gql`
 `;
 
 export default ({ navigation, route }) => {
-  const { loading, data } = useQuery(ME);
+  const { loading, data } = useQuery(ME, {
+    fetchPolicy: "network-only",
+  });
   const logout = useLogOut();
 
   useLayoutEffect(() => {

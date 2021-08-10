@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, RefreshControl } from "react-native";
+import { ScrollView, RefreshControl, Text, View } from "react-native";
 import styled from "styled-components";
 import styles from "../../styles";
 import Loader from "../../components/Loader";
@@ -17,19 +17,13 @@ export const FEED_QUERY = gql`
   ${POST_FRAGMENT}
 `;
 
-const View = styled.View`
-  background-color: ${styles.screenBackgroundColor};
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-`;
-
-const Text = styled.Text``;
-
 export default ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
-  const { loading, data, refetch } = useQuery(FEED_QUERY);
-  // console.log(loading, data);
+  const { loading, data, refetch } = useQuery(FEED_QUERY, {
+    fetchPolicy: "network-only",
+  });
+
+  console.log(loading, data);
   const refresh = async () => {
     try {
       setRefreshing(true);
@@ -50,10 +44,16 @@ export default ({ navigation }) => {
     >
       {loading ? (
         <Loader />
-      ) : (
-        data?.seeFeed?.map((post) => (
+      ) : data && data.seeFeed && data.seeFeed.length > 0 ? (
+        data.seeFeed.map((post) => (
           <Post key={post.id} navigation={navigation} {...post} />
         ))
+      ) : (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text>내가쓴글 or 팔로우한 유저 글이 없음</Text>
+        </View>
       )}
     </ScrollView>
   );

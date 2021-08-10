@@ -146,13 +146,6 @@ export default () => (
     }}
   >
     <Tab.Screen name="Home" component={HomeStackScreen} />
-    {/* <Tab.Screen
-      name="Home"
-      component={stackFactory({
-        name: "Home",
-        component: Home,
-      })}
-    /> */}
     <Tab.Screen name="Search" component={SearchStackScreen} />
     <Tab.Screen
       name="Add"

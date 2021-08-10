@@ -32,7 +32,7 @@ const Text = styled.Text`
 export default ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [hasPermission, setHasPermission] = useState(false);
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState({});
   const [allPhotos, setAllPhotos] = useState();
   const changeSelected = (photo) => {
     setSelected(photo);
@@ -81,7 +81,7 @@ export default ({ navigation }) => {
             <>
               <Image
                 style={{ width: constants.width, height: constants.height / 2 }}
-                source={{ uri: selected.uri }}
+                source={{ uri: selected?.uri }}
               />
               <Button onPress={handleSelected}>
                 <Text>Select Photo</Text>
